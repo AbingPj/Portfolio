@@ -7,10 +7,24 @@
     <title>Bank Calculator - BankTruth Test</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @media (max-width: 767px) {
+            .no-padding-in-mobile {
+                padding: 0px !important;
+            }
+
+            .small-padding-in-mobile {
+                padding-left: 12px !important;
+                ;
+                padding-right: 12px !important;
+                ;
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100 p-6">
-    <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-md">
+<body class="bg-gray-100 p-6 no-padding-in-mobile">
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-md small-padding-in-mobile">
         <h1 class="text-2xl font-bold mb-4 text-center">BankTruth Savings Calculator</h1>
 
         <div class="grid grid-cols-12 gap-4">
@@ -34,10 +48,10 @@
             <!-- Chart Area -->
             <div class="col-span-12 md:col-span-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
-                    <canvas id="bankTruthChart" width="600" height="500"></canvas>
+                    <canvas id="bankTruthChart" width="600" height="600"></canvas>
                 </div>
                 <div>
-                    <canvas id="traditionalChart" width="600" height="500"></canvas>
+                    <canvas id="traditionalChart" width="600" height="600"></canvas>
                 </div>
             </div>
         </div>
@@ -63,7 +77,16 @@
         // Function to calculate future value
         function calculateFV(P, PMT, r, n, t) {
             const rate = r / 100;
-            return P * Math.pow(1 + rate / n, n * t) + PMT * ((Math.pow(1 + rate / n, n * t) - 1) / (rate / n));
+
+            // Interest on initial deposit
+            const interestOnInitial = P * rate * t;
+
+            // Interest on monthly contributions (Jenius method)
+            // Average months = 5.5 for 1 year
+            const avgMonths = (12 + 1) / 2;
+            const interestOnPMT = PMT * 12 * rate * (avgMonths / 12);
+
+            return P + (PMT * 12 * t) + interestOnInitial + interestOnPMT;
         }
 
         function createChart(ctx, bankArray, chartTitle) {
@@ -75,7 +98,7 @@
                         label: 'Total Earned ($)',
                         data: bankArray.map(() => 0),
                         backgroundColor: bankArray.map(bank => bank.color),
-                        barThickness: 50,
+                        barThickness: 30,
                         maxBarThickness: 60,
                         categoryPercentage: 1.0,
                         barPercentage: 1.0
