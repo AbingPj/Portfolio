@@ -164,25 +164,6 @@
         const bankTruthChart = createChart(document.getElementById('bankTruthChart').getContext('2d'), BankTruth_banks, "BankTruth Banks");
         const traditionalChart = createChart(document.getElementById('traditionalChart').getContext('2d'), Traditional_banks, "Traditional Banks");
 
-        function updateChart(chart, bankArray, maxScale = null) {
-            const balance = parseFloat(document.getElementById('balance').value);
-            const monthly = parseFloat(document.getElementById('monthly').value);
-            const years = parseFloat(document.getElementById('years').value);
-            const projected = bankArray.map(bank => calculateFV(balance, monthly, bank.apy, 12, years));
-            const totalEarned = projected.map(fv => fv - (balance + monthly * 12 * years));
-
-            chart.data.datasets[0].data = totalEarned.map(v => v.toFixed(2));
-
-            // If there's a reference max scale, use it
-            if (maxScale !== null) {
-                chart.options.scales.x.max = maxScale;
-            } else {
-                chart.options.scales.x.max = undefined;
-            }
-
-            chart.update();
-            return totalEarned;
-        }
         // Update charts dynamically
         function updateAllCharts() {
             const balance = parseFloat(document.getElementById('balance').value);
