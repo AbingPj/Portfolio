@@ -60,24 +60,106 @@
                 </div>
             </div>
         </div>
+
+        <br>
+        <br>
+        <br>
+
+        <h1 class="text-2xl font-bold mb-4 text-center">Compare your current bank to other banks</h1>
+        <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-12 md:col-span-6">
+                <div class="grid grid-cols-1 gap-4 mb-6">
+                    <div>
+                        <label class="block mb-1 font-semibold">Your Current Bank</label>
+                        <select id="currentBankDropdown" class="w-full p-2 border rounded">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-semibold">Compare to other Bank</label>
+                        <select id="otherBankDropdown" class="w-full p-2 border rounded">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Area -->
+            <div class="col-span-12 md:col-span-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                    <canvas id="compareCharts" width="400" height="600"></canvas>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
         const BankTruth_banks = [
-            { name: 'EverBank', color: '#3B82F6', apy: 4.05, logo: 'https://www.bankrate.com/system/img/inst/2468_hires_logo_2x.png' },
-            { name: 'Capital One', color: '#10B981', apy: 3.40, logo: 'https://www.bankrate.com/system/img/inst/8351_hires_logo_2x.png' },
-            { name: 'CiT Bank', color: '#F59E0B', apy: 3.85, logo: 'https://www.bankrate.com/system/img/inst/7821_hires_logo_2x.png' },
-            { name: 'Jenius Bank', color: '#8B5CF6', apy: 4.20, logo: 'https://www.bankrate.com/system/img/inst/12004_hires_logo_2x.png' },
-            { name: 'Poppy Bank', color: '#EC4899', apy: 4.00, logo: 'https://www.bankrate.com/system/img/inst/13023_hires_logo_2x.png' },
+            { id: 1, name: 'EverBank', color: '#3B82F6', apy: 4.05, logo: 'https://www.bankrate.com/system/img/inst/2468_hires_logo_2x.png' },
+            { id: 2, name: 'Capital One', color: '#10B981', apy: 3.40, logo: 'https://www.bankrate.com/system/img/inst/8351_hires_logo_2x.png' },
+            { id: 3, name: 'CiT Bank', color: '#F59E0B', apy: 3.85, logo: 'https://www.bankrate.com/system/img/inst/7821_hires_logo_2x.png' },
+            { id: 4, name: 'Jenius Bank', color: '#8B5CF6', apy: 4.05, logo: 'https://www.bankrate.com/system/img/inst/12004_hires_logo_2x.png' },
+            { id: 5, name: 'Poppy Bank', color: '#EC4899', apy: 4.00, logo: 'https://www.bankrate.com/system/img/inst/13023_hires_logo_2x.png' },
         ];
 
         const Traditional_banks = [
-            { name: 'Bank of America', color: '#A3A3A3', apy: 0.03, logo: 'https://banktruth.com/storage/bank-logos/bank-of-america.webp' },
-            { name: 'Chase', color: '#A3A3A3', apy: 0.01, logo: 'https://banktruth.com/storage/bank-logos/chase-bank.webp' },
-            { name: 'US Bank', color: '#A3A3A3', apy: 0.01, logo: 'https://banktruth.com/storage/bank-logos/us-bank.webp' },
-            { name: 'Wells Fargo', color: '#A3A3A3', apy: 0.05, logo: 'https://banktruth.com/storage/bank-logos/wells-fargo.webp' },
-            { name: 'USAA', color: '#A3A3A3', apy: 0.05, logo: 'https://banktruth.com/storage/bank-logos/usaa-federal-savings-bank.webp' },
+            { id: 6, name: 'Bank of America', color: '#A3A3A3', apy: 0.03, logo: 'https://banktruth.com/storage/bank-logos/bank-of-america.webp' },
+            { id: 7, name: 'Chase', color: '#A3A3A3', apy: 0.01, logo: 'https://banktruth.com/storage/bank-logos/chase-bank.webp' },
+            { id: 8, name: 'US Bank', color: '#A3A3A3', apy: 0.01, logo: 'https://banktruth.com/storage/bank-logos/us-bank.webp' },
+            { id: 9, name: 'Wells Fargo', color: '#A3A3A3', apy: 0.05, logo: 'https://banktruth.com/storage/bank-logos/wells-fargo.webp' },
+            { id: 10, name: 'USAA', color: '#A3A3A3', apy: 0.05, logo: 'https://banktruth.com/storage/bank-logos/usaa-federal-savings-bank.webp' },
         ];
+
+
+        // default selected bank
+        let selected_dropdown_1 = 4;
+        let selected_dropdown_2 = 6;
+
+
+        const dropdown1 = document.getElementById('currentBankDropdown');
+        const dropdown2 = document.getElementById('otherBankDropdown');
+
+        function addBanksToDropdown(dropdown, groupLabel, banks, selectedId) {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = groupLabel;
+
+            banks.forEach(bank => {
+                const option = document.createElement('option');
+                option.value = bank.id;
+                option.textContent = `${bank.name} - APY: ${bank.apy}%`;
+
+                // Set default selected
+                if (bank.id === selectedId) {
+                    option.selected = true;
+                }
+
+                optgroup.appendChild(option);
+            });
+
+            dropdown.appendChild(optgroup);
+        }
+
+        // Add banks with default selection
+        addBanksToDropdown(dropdown1, 'BankTruth Banks', BankTruth_banks, selected_dropdown_1);
+        addBanksToDropdown(dropdown1, 'Traditional Banks', Traditional_banks, selected_dropdown_1);
+
+        addBanksToDropdown(dropdown2, 'BankTruth Banks', BankTruth_banks, selected_dropdown_2);
+        addBanksToDropdown(dropdown2, 'Traditional Banks', Traditional_banks, selected_dropdown_2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // Function to calculate future value
         function calculateFV(P, PMT, r, n, t) {
@@ -202,6 +284,80 @@
         });
 
         updateAllCharts();
+
+
+
+
+
+
+
+
+
+        const compareCanvas = document.getElementById('compareCharts').getContext('2d');
+        let compareChart;
+
+        // Function to update comparison chart
+        function updateCompareChart() {
+            const balance = parseFloat(document.getElementById('balance').value);
+            const monthly = parseFloat(document.getElementById('monthly').value);
+            const years = parseFloat(document.getElementById('years').value);
+
+            const selected1 = parseInt(dropdown1.value);
+            const selected2 = parseInt(dropdown2.value);
+
+            // Find selected banks
+            const bank1 = BankTruth_banks.concat(Traditional_banks).find(b => b.id === selected1);
+            const bank2 = BankTruth_banks.concat(Traditional_banks).find(b => b.id === selected2);
+
+            const banks = [bank1, bank2];
+
+            const data = banks.map(bank => calculateFV(balance, monthly, bank.apy, 12, years));
+            const totalEarned = banks.map((bank, i) => data[i] - (balance + monthly * 12 * years));
+
+            // Destroy previous chart if exists
+            if (compareChart) compareChart.destroy();
+
+            compareChart = new Chart(compareCanvas, {
+                type: 'bar',
+                data: {
+                    labels: banks.map(b => b.name),
+                    datasets: [{
+                        label: 'Total Balance ($)',
+                        data: data.map(d => d.toFixed(2)),
+                        backgroundColor: banks.map(b => b.color)
+                    }, {
+                        label: 'Total Earned ($)',
+                        data: totalEarned.map(d => d.toFixed(2)),
+                        backgroundColor: banks.map(b => '#888888')
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: {
+                            display: true,
+                            text: 'Comparison of Selected Banks',
+                            font: { size: 18 },
+                            padding: { top: 10, bottom: 20 }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // Update chart when dropdown changes or inputs change
+        dropdown1.addEventListener('change', updateCompareChart);
+        dropdown2.addEventListener('change', updateCompareChart);
+        document.getElementById('balance').addEventListener('input', updateCompareChart);
+        document.getElementById('monthly').addEventListener('input', updateCompareChart);
+        yearsSlider.addEventListener('input', updateCompareChart);
+
+        // Initial render
+        updateCompareChart();
     </script>
 </body>
 
