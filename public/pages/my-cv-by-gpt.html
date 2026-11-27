@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leopoldo Abing, Jr. - CV</title>
+<style>
+  :root {
+    --charcoal: #35363b;
+    --sidebar: #eee7e2;
+    --ink: #202020;
+    --muted: #777;
+    --page-width: 210mm;
+    --page-height: 297mm;
+    --sidebar-width: 33.333%;
+    --main-width: 66.667%;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--ink);
+    background: #d9d9d9;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    position: relative;
+    width: var(--page-width);
+    height: var(--page-height);
+    margin: 12mm auto;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2mm 7mm rgba(0,0,0,.18);
+    page-break-after: always;
+    break-after: page;
+  }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+
+  .sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    background: var(--sidebar);
+    padding: 0 8mm 9mm;
+  }
+
+  .main {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: var(--main-width);
+    background: #fff;
+    padding: 59mm 8mm 10mm 7.5mm;
+  }
+
+  /* Page 1 header and its angled lower edge */
+  .header {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 54mm;
+    background: var(--charcoal);
+    color: #fff;
+    clip-path: polygon(0 0, 100% 0, 100% 74%, 33.333% 74%, 16.2% 100%, 0 79%);
+  }
+  .profile-picture {
+    position: absolute;
+    left: 19mm;
+    top: 7.5mm;
+    width: 30mm;
+    height: 30mm;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 0;
+  }
+  .header-copy {
+    position: absolute;
+    left: 74mm;
+    top: 10.5mm;
+  }
+  .header-copy h1 {
+    margin: 0 0 2mm;
+    font-size: 25pt;
+    line-height: 1.15;
+    font-weight: 400;
+    letter-spacing: .1px;
+  }
+  .header-copy p {
+    margin: 0;
+    font-size: 13pt;
+    line-height: 1.25;
+    font-weight: 400;
+  }
+
+  /* Sidebar content on page 1 */
+  .sidebar-content {
+    position: relative;
+    z-index: 3;
+    padding-top: 61mm;
+  }
+  .side-section { margin: 0 0 8mm; }
+  .side-section h2 {
+    margin: 0 0 4mm;
+    font-size: 13pt;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+  .side-section p {
+    margin: 0 0 2.5mm;
+    font-size: 10pt;
+    line-height: 1.48;
+  }
+  .side-section .small-gap { margin-top: 3mm; }
+  .contact-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 2.5mm;
+    margin: 0 0 3mm;
+    font-size: 9.5pt;
+    line-height: 1.45;
+  }
+  .contact-icon {
+    display: inline-flex;
+    flex: 0 0 5mm;
+    width: 5mm;
+    height: 5mm;
+    margin-top: .2mm;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    background: #45464a;
+    color: white;
+    font-size: 7pt;
+    font-weight: bold;
+  }
+  .contact-text { min-width: 0; }
+  .side-section ul {
+    margin: 0;
+    padding-left: 4.5mm;
+  }
+  .side-section li {
+    margin: 0 0 2mm;
+    font-size: 10pt;
+    line-height: 1.45;
+  }
+  .side-section a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .section { margin: 0 0 13mm; }
+  .section-title {
+    margin: 0 0 3mm;
+    padding-bottom: 1.4mm;
+    border-bottom: .35mm solid #222;
+    font-size: 13pt;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+  .profile-text {
+    margin: 0;
+    font-size: 10pt;
+    line-height: 1.48;
+  }
+  .job { margin: 0 0 8mm; }
+  .job-title {
+    margin: 0;
+    font-size: 10pt;
+    line-height: 1.35;
+    font-weight: 700;
+  }
+  .job-date {
+    margin: .4mm 0 1.8mm;
+    color: var(--muted);
+    font-size: 9pt;
+    line-height: 1.25;
+  }
+  .project-label {
+    margin: 0 0 1mm;
+    font-size: 9.5pt;
+    line-height: 1.3;
+    font-style: italic;
+  }
+  .job ul {
+    margin: 0;
+    padding-left: 10mm;
+  }
+  .job li {
+    margin: 0 0 1mm;
+    padding-left: .5mm;
+    font-size: 9.5pt;
+    line-height: 1.4;
+  }
+  .certificate { margin: 0 0 4mm; }
+  .certificate strong {
+    display: block;
+    font-size: 10pt;
+    line-height: 1.3;
+  }
+  .certificate span {
+    display: block;
+    font-size: 9.5pt;
+    line-height: 1.3;
+  }
+  .seminar {
+    margin: 0 0 2.5mm;
+    font-size: 10pt;
+    line-height: 1.35;
+    font-weight: 700;
+  }
+
+  /* Page 2 starts with the continued experience at the top of the main column */
+  .page-two .sidebar { background: var(--sidebar); }
+  .page-two .main { padding-top: 13mm; }
+  .page-two .section { margin-bottom: 11mm; }
+  .page-two .job { margin-bottom: 9mm; }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  @media print {
+    html, body { background: #fff; }
+    .page {
+      margin: 0;
+      box-shadow: none;
+      width: 210mm;
+      height: 297mm;
+    }
+  }
+  @media screen and (max-width: 850px) {
+    .page { transform-origin: top left; margin: 8mm; }
+    body { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<section class="page page-one">
+  <header class="header">
+    <img
+      class="profile-picture"
+      src="https://abing-leopoldo-jr.web.app/assets/img/abingpj.jpg"
+      alt="Leopoldo Abing, Jr."
+    >
+    <div class="header-copy">
+      <h1>Leopoldo Abing, Jr.</h1>
+      <p>Senior Full Stack Web Developer</p>
+    </div>
+  </header>
+
+  <aside class="sidebar">
+    <div class="sidebar-content">
+      <!-- PERSONAL INFORMATION -->
+      <section class="side-section">
+        <h2>Personal Info</h2>
+        <div class="contact-line">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><a href="mailto:pj.abing@gmail.com">pj.abing@gmail.com</a></span>
+        </div>
+        <div class="contact-line">
+          <span class="contact-icon">☎</span>
+          <span class="contact-text">+639381571322</span>
+        </div>
+        <div class="contact-line">
+          <span class="contact-icon">●</span>
+          <span class="contact-text">Dumalag 1, Matina Aplaya,<br>Davao City, 8000, Philippines</span>
+        </div>
+      </section>
+
+      <!-- EDUCATION -->
+      <section class="side-section">
+        <h2>Education</h2>
+        <p><strong>Bachelor of Science in<br>Information Technology</strong><br>
+        University of Mindanao,<br>
+        Matina Campus, Davao City<br>
+        2015 - 2019</p>
+      </section>
+
+      <!-- CORE SKILLS -->
+      <section class="side-section">
+        <h2>Core Skills</h2>
+        <p>Frontend: Nuxt.js (v2 &amp; v3), Vue.js, Quasar, Bootstrap (v3–v5), SCSS, CSS Media Queries</p>
+        <p>Backend &amp; APIs: Node.js (Express), PHP (Laravel), REST API Development, File/PDF Handling</p>
+        <p>Database: MySQL</p>
+        <p>Collaboration: Agile workflow, cross-team coordination, client project delivery</p>
+      </section>
+
+      <!-- LINKS -->
+      <section class="side-section">
+        <h2>Links</h2>
+        <p><a href="https://abing-leopoldo-jr.web.app/" target="_blank" rel="noopener noreferrer">Portfolio</a></p>
+      </section>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- PERSONAL PROFILE -->
+    <section class="section">
+      <h2 class="section-title">Personal Profile</h2>
+      <p class="profile-text">Senior Full-Stack Web Developer with 6 years of experience building and maintaining modern web applications. Skilled in Nuxt.js, Vue.js, Laravel, Node.js, and MySQL, with proven expertise in creating scalable front-end systems, backend integrations, and PDF/signature automation workflows. Known for collaborating closely with cross-functional teams and delivering high-quality solutions for enterprise clients.</p>
+    </section>
+
+    <!-- PROFESSIONAL EXPERIENCE -->
+    <section class="section">
+      <h2 class="section-title">Professional Experience</h2>
+
+      <!-- Add another .job block for a new position. Keep newest experience first. -->
+      <article class="job">
+        <h3 class="job-title">Senior Full-Stack Web Developer, IdeaHub IT Solutions Provider Inc.</h3>
+        <p class="job-date">July 2023 - Present</p>
+        <p class="project-label">Projects for PropNex (Real Estate Client)</p>
+        <ul>
+          <li>Enhanced and maintained a large-scale Document Management System.</li>
+          <li>Integrated DocuSign workflows by coordinating with backend team for setup.</li>
+          <li>Developed an alternative PDF signing feature: enabled users to upload signatures, with backend processing to embed images into PDF documents.</li>
+          <li>Built mobile webviews using Nuxt 3 and worked with the mobile team to implement advanced features (file uploads, PDF/image downloads, WhatsApp and social sharing).</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <h3 class="job-title">Intermediate Full-Stack Web Developer, IdeaHub IT Solutions Provider Inc.</h3>
+        <p class="job-date">July 2021 - July 2023</p>
+        <p class="project-label">Projects for PropNex (Real Estate Client)</p>
+        <ul>
+          <li>Developed an Admin Dashboard for property management using Nuxt.js.</li>
+          <li>Built a Marketing Site App (custom HTML/email template maker with export to PDF) using Nuxt.js + Node.js Express.</li>
+          <li>Enhanced a Webinar Platform with Zoom SDK integration (PHP-based).</li>
+          <li>Improved and redesigned a Document Management System frontend (Nuxt.js + Node.js Express backend).</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</section>
+
+<!-- PAGE 2 -->
+<section class="page page-two">
+  <aside class="sidebar"></aside>
+
+  <main class="main">
+    <!-- CONTINUED PROFESSIONAL EXPERIENCE -->
+    <section class="section">
+      <article class="job">
+        <h3 class="job-title">Frontend Web Developer, IdeaHub IT Solutions Provider Inc.</h3>
+        <p class="job-date">June 2019 - July 2021</p>
+        <ul>
+          <li>Fixed bugs and improved design for existing Laravel + Vue.js projects.</li>
+          <li>Built an e-commerce application using Laravel and Vue.js.</li>
+          <li>Developed a Virtual Classroom App frontend with Quasar and Zoom integration.</li>
+          <li>Created a Delivery App frontend (Nuxt.js) with Google Maps API + backend APIs.</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- CERTIFICATES -->
+    <section class="section">
+      <h2 class="section-title">Certificates</h2>
+      <div class="certificate">
+        <strong>Microsoft Technology Associate (MTA)</strong>
+        <span>Networking Fundamentals</span>
+      </div>
+      <div class="certificate">
+        <strong>Microsoft Technology Associate (MTA)</strong>
+        <span>Database Administration Fundamentals</span>
+      </div>
+      <div class="certificate">
+        <strong>National Certificate II</strong>
+        <span>Computer System Servicing</span>
+      </div>
+    </section>
+
+    <!-- SEMINARS & TRAININGS -->
+    <section class="section">
+      <h2 class="section-title">Seminars &amp; Trainings</h2>
+      <p class="seminar">Laravel Framework Computer Hands-on Seminar</p>
+      <p class="seminar">Bootstrap Web Designing Seminar</p>
+      <p class="seminar">Computer System Servicing Training</p>
+    </section>
+  </main>
+</section>
+
+</body>
+</html>

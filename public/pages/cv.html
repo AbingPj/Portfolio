@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leopoldo Abing, Jr – Senior Full Stack Web Developer</title>
+<style>
+  /* =====================================================
+     THEME (edit colors / sizes here)
+     ===================================================== */
+  :root {
+    --font: Arial, Helvetica, sans-serif;
+    --dark: #35373d;        /* header background */
+    --sidebar-bg: #ede6e0;  /* left column background */
+    --text: #2f2f2f;
+    --heading: #2b2d31;
+    --muted: #8a8a8a;
+    --sidebar-width: 70mm;
+    --page-margin-y: 10mm;  /* top/bottom margin on printed pages */
+    --header-height: 45mm;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: #d9d9d9;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  a { color: inherit; }
+
+  /* =====================================================
+     PAGE WRAPPER
+     ===================================================== */
+  .cv {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 10mm auto;
+    background: linear-gradient(to right, var(--sidebar-bg) var(--sidebar-width), #fff var(--sidebar-width));
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .25);
+    position: relative;
+  }
+
+  /* =====================================================
+     HEADER (photo, name, title)
+     ===================================================== */
+  .cv-header {
+    position: relative;
+    height: var(--header-height);
+    background: var(--dark);
+    color: #fff;
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    align-items: center;
+  }
+
+  /* downward chevron under the left column */
+  .cv-header::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 13mm;
+    background: var(--dark);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+  }
+
+  .profile-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-picture {
+    width: 30mm;
+    height: 30mm;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .header-text { padding-left: 7.7mm; }
+
+  .name {
+    margin: 0;
+    font-size: 28pt;
+    font-weight: normal;
+    line-height: 1.15;
+  }
+
+  .job-title {
+    margin: 2mm 0 0;
+    font-size: 13pt;
+    font-weight: normal;
+  }
+
+  /* =====================================================
+     TWO-COLUMN BODY
+     ===================================================== */
+  .cv-body {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr;
+    padding-top: 19mm;
+  }
+
+  .sidebar { padding: 0 6mm 10mm 8mm; }
+  .main    { padding: 0 8mm 10mm 7.7mm; }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar-title {
+    margin: 0 0 3.5mm;
+    font-size: 13pt;
+    font-weight: bold;
+    color: var(--heading);
+    line-height: 1.2;
+  }
+
+  .sidebar-section { margin-bottom: 8mm; }
+
+  .sidebar-section p,
+  .sidebar-section li,
+  .sidebar-section a { font-size: 9.5pt; line-height: 1.55; }
+
+  /* Contact list */
+  .contact-list { list-style: none; margin: 0; padding: 0; }
+  .contact-item { display: flex; align-items: flex-start; gap: 2.5mm; margin-bottom: 2.5mm; }
+  .contact-icon { flex: 0 0 5.2mm; width: 5.2mm; height: 5.2mm; margin-top: .4mm; }
+
+  /* Education */
+  .education-item {
+    position: relative;
+    margin-left: 1mm;
+    padding-left: 4mm;
+    border-left: 0.5mm solid var(--dark);
+  }
+  .education-item::before {
+    content: "";
+    position: absolute;
+    left: -1.5mm;
+    top: 0;
+    width: 2.6mm;
+    height: 2.6mm;
+    border-radius: 50%;
+    background: var(--dark);
+  }
+  .education-degree { font-weight: bold; margin: 0; }
+  .education-school { margin: 0; }
+
+  /* Skills */
+  .skill-group { margin: 0 0 3mm; }
+
+  /* ---------- Main column ---------- */
+  .section { margin-bottom: 9mm; }
+
+  .section-title {
+    margin: 0 0 3mm;
+    padding-bottom: 1mm;
+    font-size: 14pt;
+    font-weight: bold;
+    color: #000;
+    line-height: 1.3;
+    border-bottom: 0.5mm solid #000;
+  }
+
+  .profile-text { margin: 0; }
+
+  /* Work experience */
+  .job { margin-bottom: 7mm; break-inside: avoid; page-break-inside: avoid; }
+
+  .job-position {
+    margin: 0;
+    font-size: 10.5pt;
+    font-weight: bold;
+    color: #000;
+    line-height: 1.4;
+  }
+  .job-dates { margin: 0; font-size: 9pt; color: var(--muted); line-height: 1.4; }
+  .job-project { margin: 0; font-style: italic; }
+
+  .job-list, .plain-list { margin: 0; padding-left: 12mm; }
+  .job-list li { margin: 0; }
+
+  /* Certificates / seminars */
+  .item-list { list-style: none; margin: 0; padding: 0; }
+  .item-list li { margin-bottom: 2mm; }
+
+  /* =====================================================
+     PRINT (A4)
+     ===================================================== */
+  @page { size: A4; margin: var(--page-margin-y) 0; }
+
+  @media print {
+    html {
+      background: linear-gradient(to right, var(--sidebar-bg) var(--sidebar-width), #fff var(--sidebar-width));
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    body { font-family: Arial, Helvetica, sans-serif; }
+    .cv {
+      width: 210mm;
+      min-height: 0;
+      margin: 0;
+      box-shadow: none;
+      background: none;
+    }
+    /* header bleeds into the top page margin on the first page */
+    .cv-header {
+      margin-top: calc(var(--page-margin-y) * -1);
+      height: calc(var(--header-height) + var(--page-margin-y));
+      padding-top: var(--page-margin-y);
+    }
+    .section-title, .job-position, .job-dates, .job-project { break-after: avoid; page-break-after: avoid; }
+    .job, .education-item, .skill-group { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="cv">
+
+  <!-- =====================================================
+       HEADER: photo, name, job title
+       ===================================================== -->
+  <header class="cv-header">
+    <div class="profile-wrap">
+      <img
+        src="https://abing-leopoldo-jr.web.app/assets/img/abingpj.jpg"
+        alt="Leopoldo Abing Jr."
+        class="profile-picture"
+      >
+    </div>
+    <div class="header-text">
+      <h1 class="name">Leopoldo Abing, Jr</h1>
+      <p class="job-title">Senior Full Stack Web Developer</p>
+    </div>
+  </header>
+
+  <div class="cv-body">
+
+    <!-- =====================================================
+         SIDEBAR (left column)
+         ===================================================== -->
+    <aside class="sidebar">
+
+      <!-- ========== PERSONAL INFO ========== -->
+      <section class="sidebar-section">
+        <h2 class="sidebar-title">Personal Info</h2>
+        <ul class="contact-list">
+          <li class="contact-item">
+            <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#35373d"/><path d="M6 8.5h12v7H6z" fill="#fff"/><path d="M6.5 9l5.5 4 5.5-4" fill="none" stroke="#35373d" stroke-width="1.3"/></svg>
+            <a href="mailto:pj.abing@gmail.com">pj.abing@gmail.com</a>
+          </li>
+          <li class="contact-item">
+            <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#35373d"/><path d="M8.2 6.5l2 .4.8 2.6-1.2 1c.7 1.4 1.8 2.5 3.200 3.200l1-1.200 2.600.8.4 2c0 .8-.7 1.400-1.500 1.400C11 16.700 7.300 13 7.100 8c0-.8.5-1.500 1.100-1.500z" fill="#fff"/></svg>
+            <span>+639381571322</span>
+          </li>
+          <li class="contact-item">
+            <svg class="contact-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#35373d"/><path d="M12 5.500a4.700 4.700 0 0 0-4.700 4.700c0 3.300 4.700 8.300 4.700 8.300s4.700-5 4.700-8.300A4.700 4.700 0 0 0 12 5.500z" fill="#fff"/><circle cx="12" cy="10.200" r="1.700" fill="#35373d"/></svg>
+            <span>Dumalag 1, Matina Aplaya, Davao City, 8000, Philippines</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ========== EDUCATION ========== -->
+      <section class="sidebar-section">
+        <h2 class="sidebar-title">Education</h2>
+        <!-- To add another education entry, duplicate this block -->
+        <div class="education-item">
+          <p class="education-degree">Bachelor of Science in Information Technology</p>
+          <p class="education-school">University of Mindanao, Matina Campus, Davao City</p>
+          <p class="education-school">2015 - 2019</p>
+        </div>
+      </section>
+
+      <!-- ========== CORE SKILLS ========== -->
+      <section class="sidebar-section">
+        <h2 class="sidebar-title">Core Skills</h2>
+        <!-- To add a skill group, duplicate a <p class="skill-group"> line -->
+        <p class="skill-group">Frontend: Nuxt.js (v2 &amp; v3), Vue.js, Quasar, Bootstrap (v3–v5), SCSS, CSS Media Queries</p>
+        <p class="skill-group">Backend &amp; APIs: Node.js (Express), PHP (Laravel), REST API Development, File/PDF Handling</p>
+        <p class="skill-group">Database: MySQL</p>
+        <p class="skill-group">Collaboration: Agile workflow, cross-team coordination, client project delivery</p>
+      </section>
+
+      <!-- ========== LINKS ========== -->
+      <section class="sidebar-section">
+        <h2 class="sidebar-title">Links</h2>
+        <p><a href="https://abing-leopoldo-jr.web.app/" target="_blank" rel="noopener noreferrer">Portfolio</a></p>
+      </section>
+
+    </aside>
+
+    <!-- =====================================================
+         MAIN COLUMN (right)
+         ===================================================== -->
+    <main class="main">
+
+      <!-- ========== PERSONAL PROFILE ========== -->
+      <section class="section">
+        <h2 class="section-title">Personal Profile</h2>
+        <p class="profile-text">Senior Full-Stack Web Developer with 6 years of experience building and maintaining modern web applications. Skilled in Nuxt.js, Vue.js, Laravel, Node.js, and MySQL, with proven expertise in creating scalable front-end systems, backend integrations, and PDF/signature automation workflows. Known for collaborating closely with cross-functional teams and delivering high-quality solutions for enterprise clients.</p>
+      </section>
+
+      <!-- ========== PROFESSIONAL EXPERIENCE ==========
+           Keep newest first. To add a job, copy one <article class="job">
+           block and paste it at the TOP of this section (below the title). -->
+      <section class="section">
+        <h2 class="section-title">Professional Experience</h2>
+
+        <!-- Job: Senior Full-Stack Web Developer -->
+        <article class="job">
+          <h3 class="job-position">Senior Full-Stack Web Developer, IdeaHub IT Solutions Provider Inc.</h3>
+          <p class="job-dates">July 2023 - Present</p>
+          <p class="job-project">Projects for PropNex (Real Estate Client)</p>
+          <ul class="job-list">
+            <li>Enhanced and maintained a large-scale Document Management System.</li>
+            <li>Integrated DocuSign workflows by coordinating with backend team for setup.</li>
+            <li>Developed an alternative PDF signing feature: enabled users to upload signatures, with backend processing to embed images into PDF documents.</li>
+            <li>Built mobile webviews using Nuxt 3 and worked with the mobile team to implement advanced features (file uploads, PDF/image downloads, WhatsApp and social sharing).</li>
+          </ul>
+        </article>
+
+        <!-- Job: Intermediate Full-Stack Web Developer -->
+        <article class="job">
+          <h3 class="job-position">Intermediate Full-Stack Web Developer, IdeaHub IT Solutions Provider Inc.</h3>
+          <p class="job-dates">July 2021 - July 2023</p>
+          <p class="job-project">Projects for PropNex (Real Estate Client)</p>
+          <ul class="job-list">
+            <li>Developed an Admin Dashboard for property management using Nuxt.js.</li>
+            <li>Built a Marketing Site App (custom HTML/email template maker with export to PDF) using Nuxt.js + Node.js Express.</li>
+            <li>Enhanced a Webinar Platform with Zoom SDK integration (PHP-based).</li>
+            <li>Improved and redesigned a Document Management System frontend (Nuxt.js + Node.js Express backend).</li>
+          </ul>
+        </article>
+
+        <!-- Job: Frontend Web Developer -->
+        <article class="job">
+          <h3 class="job-position">Frontend Web Developer, IdeaHub IT Solutions Provider Inc.</h3>
+          <p class="job-dates">June 2019 - July 2021</p>
+          <ul class="job-list">
+            <li>Fixed bugs and improved design for existing Laravel + Vue.js projects.</li>
+            <li>Built an e-commerce application using Laravel and Vue.js.</li>
+            <li>Developed a Virtual Classroom App frontend with Quasar and Zoom integration.</li>
+            <li>Created a Delivery App frontend (Nuxt.js) with Google Maps API + backend APIs.</li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- ========== CERTIFICATES ========== -->
+      <section class="section">
+        <h2 class="section-title">Certificates</h2>
+        <ul class="item-list">
+          <li>Microsoft Technology Associate (MTA)<br>Networking Fundamentals</li>
+          <li>Microsoft Technology Associate (MTA)<br>Database Administration Fundamentals</li>
+          <li>National Certificate II<br>Computer System Servicing</li>
+        </ul>
+      </section>
+
+      <!-- ========== SEMINARS & TRAININGS ========== -->
+      <section class="section">
+        <h2 class="section-title">Seminars &amp; Trainings</h2>
+        <ul class="item-list">
+          <li>Laravel Framework Computer Hands-on Seminar</li>
+          <li>Bootstrap Web Designing Seminar</li>
+          <li>Computer System Servicing Training</li>
+        </ul>
+      </section>
+
+    </main>
+  </div>
+</div>
+</body>
+</html>
