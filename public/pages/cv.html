@@ -32,7 +32,7 @@
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10pt;
-    line-height: 1.6;
+    line-height: 1.5;
     color: var(--text);
   }
 
@@ -110,11 +110,11 @@
   .cv-body {
     display: grid;
     grid-template-columns: var(--sidebar-width) 1fr;
-    padding-top: 19mm;
+    padding-top: 16mm;
   }
 
   .sidebar { padding: 0 6mm 10mm 8mm; }
-  .main    { padding: 0 8mm 10mm 7.7mm; }
+  .main    { padding: 0 8mm 10mm 7.7mm; font-size: 9.5pt; }
 
   /* ---------- Sidebar ---------- */
   .sidebar-title {
@@ -160,7 +160,7 @@
   .skill-group { margin: 0 0 3mm; }
 
   /* ---------- Main column ---------- */
-  .section { margin-bottom: 9mm; }
+  .section { margin-bottom: 7mm; }
 
   .section-title {
     margin: 0 0 3mm;
@@ -175,7 +175,7 @@
   .profile-text { margin: 0; }
 
   /* Work experience */
-  .job { margin-bottom: 7mm; break-inside: avoid; page-break-inside: avoid; }
+  .job { margin-bottom: 5mm; }
 
   .job-position {
     margin: 0;
@@ -185,10 +185,11 @@
     line-height: 1.4;
   }
   .job-dates { margin: 0; font-size: 9pt; color: var(--muted); line-height: 1.4; }
-  .job-project { margin: 0; font-style: italic; }
 
-  .job-list, .plain-list { margin: 0; padding-left: 12mm; }
-  .job-list li { margin: 0; }
+  .job--new-page { padding-top: 0; }
+
+  .job-list, .plain-list { margin: 0; padding-left: 8mm; }
+  .job-list li { margin: 0; break-inside: avoid; page-break-inside: avoid; }
 
   /* Certificates / seminars */
   .item-list { list-style: none; margin: 0; padding: 0; }
@@ -197,7 +198,7 @@
   /* =====================================================
      PRINT (A4)
      ===================================================== */
-  @page { size: A4; margin: var(--page-margin-y) 0; }
+  @page { size: A4; margin: 0; }
 
   @media print {
     html {
@@ -213,14 +214,16 @@
       box-shadow: none;
       background: none;
     }
-    /* header bleeds into the top page margin on the first page */
-    .cv-header {
-      margin-top: calc(var(--page-margin-y) * -1);
-      height: calc(var(--header-height) + var(--page-margin-y));
-      padding-top: var(--page-margin-y);
+    /* page 1 has no top margin so the header bleeds to the paper edge;
+       every printed page keeps a bottom margin via the cloned padding */
+    .cv-body {
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      padding-bottom: var(--page-margin-y);
     }
-    .section-title, .job-position, .job-dates, .job-project { break-after: avoid; page-break-after: avoid; }
-    .job, .education-item, .skill-group { break-inside: avoid; }
+    .section-title, .job-position, .job-dates { break-after: avoid; page-break-after: avoid; }
+    .education-item, .skill-group { break-inside: avoid; }
+    .job--new-page { break-before: page; page-break-before: always; padding-top: var(--page-margin-y); }
   }
 </style>
 </head>
@@ -281,14 +284,15 @@
         </div>
       </section>
 
-      <!-- ========== CORE SKILLS ========== -->
+      <!-- ========== TECHNICAL SKILLS ========== -->
       <section class="sidebar-section">
-        <h2 class="sidebar-title">Core Skills</h2>
-        <!-- To add a skill group, duplicate a <p class="skill-group"> line -->
-        <p class="skill-group">Frontend: Nuxt.js (v2 &amp; v3), Vue.js, Quasar, Bootstrap (v3–v5), SCSS, CSS Media Queries</p>
-        <p class="skill-group">Backend &amp; APIs: Node.js (Express), PHP (Laravel), REST API Development, File/PDF Handling</p>
-        <p class="skill-group">Database: MySQL</p>
-        <p class="skill-group">Collaboration: Agile workflow, cross-team coordination, client project delivery</p>
+        <h2 class="sidebar-title">Technical Skills</h2>
+        <!-- To add a skill category, duplicate a <p class="skill-group"> line -->
+        <p class="skill-group"><strong>Frontend:</strong> HTML, JavaScript, Nuxt.js (v2 &amp; v3), Vue.js, Quasar, Bootstrap (v3–v5), SCSS, CSS Media Queries</p>
+        <p class="skill-group"><strong>Backend &amp; APIs:</strong> PHP (Laravel, Eloquent ORM, MVC Architecture), Node.js (Express), REST API Development, Axios, File and PDF Handling</p>
+        <p class="skill-group"><strong>Database:</strong> MySQL</p>
+        <p class="skill-group"><strong>Tools &amp; Collaboration:</strong> Git, Docker, Agile Workflow, Cross-team Coordination, Client Project Delivery</p>
+        <p class="skill-group"><strong>AI-Assisted Development:</strong> ChatGPT, GitHub Copilot (Code Assistance, Debugging, and Development Support)</p>
       </section>
 
       <!-- ========== LINKS ========== -->
@@ -304,10 +308,10 @@
          ===================================================== -->
     <main class="main">
 
-      <!-- ========== PERSONAL PROFILE ========== -->
+      <!-- ========== PROFESSIONAL SUMMARY ========== -->
       <section class="section">
-        <h2 class="section-title">Personal Profile</h2>
-        <p class="profile-text">Senior Full-Stack Web Developer with 6 years of experience building and maintaining modern web applications. Skilled in Nuxt.js, Vue.js, Laravel, Node.js, and MySQL, with proven expertise in creating scalable front-end systems, backend integrations, and PDF/signature automation workflows. Known for collaborating closely with cross-functional teams and delivering high-quality solutions for enterprise clients.</p>
+        <h2 class="section-title">Professional Summary</h2>
+        <p class="profile-text">Full Stack Web Developer with 7+ years of experience developing and maintaining web applications using Vue.js, Nuxt.js, Laravel, and MySQL. Worked on web and mobile applications for PropNex, a leading real estate company in Singapore, including its Business Suite, Document Management System, and Marketing Collaterals. Experienced in developing frontend interfaces, integrating REST APIs and third-party services, handling documents and PDF generation, and maintaining existing applications. Also comfortable working with other developers and teams to deliver new features and maintain web applications.</p>
       </section>
 
       <!-- ========== PROFESSIONAL EXPERIENCE ==========
@@ -319,38 +323,35 @@
         <!-- Job: Senior Full-Stack Web Developer -->
         <article class="job">
           <h3 class="job-position">Senior Full-Stack Web Developer, IdeaHub IT Solutions Provider Inc.</h3>
-          <p class="job-dates">July 2023 - Present</p>
-          <p class="job-project">Projects for PropNex (Real Estate Client)</p>
+          <p class="job-dates">July 2023 – Present</p>
           <ul class="job-list">
-            <li>Enhanced and maintained a large-scale Document Management System.</li>
-            <li>Integrated DocuSign workflows by coordinating with backend team for setup.</li>
-            <li>Developed an alternative PDF signing feature: enabled users to upload signatures, with backend processing to embed images into PDF documents.</li>
-            <li>Built mobile webviews using Nuxt 3 and worked with the mobile team to implement advanced features (file uploads, PDF/image downloads, WhatsApp and social sharing).</li>
+            <li>Enhanced and maintained PropNex's Document Management System using Nuxt.js and Node.js, improving its features and daily operations.</li>
+            <li>Integrated DocuSign into PropNex's Document Management System, working with the backend team to enable signers to sign PDF documents online.</li>
+            <li>Developed an alternative PDF signing feature for PropNex's Document Management System, allowing signers to sign documents in person without using DocuSign.</li>
+            <li>Developed mobile WebViews using Nuxt 3 for the PropNex Business Suite app, covering Best Buy, Marketing Collaterals, Agent List, and Admin Settings. Enabled agents to access and share marketing collateral, download PDFs and images, and manage property maps through Singapore's OneMap API. Collaborated with the mobile team to integrate the WebViews into the app.</li>
           </ul>
         </article>
 
         <!-- Job: Intermediate Full-Stack Web Developer -->
         <article class="job">
           <h3 class="job-position">Intermediate Full-Stack Web Developer, IdeaHub IT Solutions Provider Inc.</h3>
-          <p class="job-dates">July 2021 - July 2023</p>
-          <p class="job-project">Projects for PropNex (Real Estate Client)</p>
+          <p class="job-dates">July 2021 – July 2023</p>
           <ul class="job-list">
-            <li>Developed an Admin Dashboard for property management using Nuxt.js.</li>
-            <li>Built a Marketing Site App (custom HTML/email template maker with export to PDF) using Nuxt.js + Node.js Express.</li>
-            <li>Enhanced a Webinar Platform with Zoom SDK integration (PHP-based).</li>
-            <li>Improved and redesigned a Document Management System frontend (Nuxt.js + Node.js Express backend).</li>
+            <li>Developed and improved PropNex's Document Management System using Nuxt.js, creating HTML-based forms and templates for PDF generation, downloads, and online signing through Dedoco (later replaced by DocuSign). Integrated the system as a WebView into the PropNex Business Suite mobile app.</li>
+            <li>Developed a Marketing Site App for PropNex's Magic Touch using Nuxt.js and Node.js Express, allowing users to create custom HTML and email templates, export them as PDFs, and generate shareable HTML links.</li>
+            <li>Developed and maintained modules for PropNex's Admin Management System using Nuxt.js, including marketing settings, property building blocks, floor plans, images, and video management with Vimeo integration. These modules allowed administrators to manage property details, update data, manage user roles, and maintain images and videos.</li>
           </ul>
         </article>
 
-        <!-- Job: Frontend Web Developer -->
-        <article class="job">
+        <!-- Job: Frontend Web Developer (always starts on page 2 when printing; remove "job--new-page" to disable) -->
+        <article class="job job--new-page">
           <h3 class="job-position">Frontend Web Developer, IdeaHub IT Solutions Provider Inc.</h3>
-          <p class="job-dates">June 2019 - July 2021</p>
+          <p class="job-dates">June 2019 – July 2021</p>
           <ul class="job-list">
-            <li>Fixed bugs and improved design for existing Laravel + Vue.js projects.</li>
-            <li>Built an e-commerce application using Laravel and Vue.js.</li>
-            <li>Developed a Virtual Classroom App frontend with Quasar and Zoom integration.</li>
-            <li>Created a Delivery App frontend (Nuxt.js) with Google Maps API + backend APIs.</li>
+            <li>Fixed bugs and improved the design of existing web applications using Laravel and Vue.js, making them easier to use.</li>
+            <li>Developed an e-commerce application using Laravel and Vue.js.</li>
+            <li>Developed the frontend of a Virtual Classroom App using Quasar and integrated Zoom features for online classes.</li>
+            <li>Developed the frontend of a Delivery App using Nuxt.js, integrating Google Maps API and backend APIs for delivery-related features.</li>
           </ul>
         </article>
       </section>
